@@ -1,0 +1,91 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        (request.auth.token.email != null && request.auth.token.email == 'chowdhuryistiak66@gmail.com')
+      );
+    }
+
+    // Product catalog - publicly readable, write enabled for admin & management
+    match /products/{productId} {
+      allow read, write: if true;
+    }
+
+    // Categories - publicly readable & manageable
+    match /categories/{categoryId} {
+      allow read, write: if true;
+    }
+
+    // Advertising & marketing banners - publicly readable & manageable
+    match /banners/{bannerId} {
+      allow read, write: if true;
+    }
+
+    // Global site settings - publicly readable & manageable
+    match /siteSettings/{settingId} {
+      allow read, write: if true;
+    }
+
+    // Versioned source releases - publicly readable & manageable
+    match /releases/{releaseId} {
+      allow read, write: if true;
+    }
+
+    // Orders
+    match /orders/{orderId} {
+      allow get: if isValidId(orderId);
+      allow list: if true;
+      allow create: if incoming().orderNumber is string && incoming().total is number && incoming().total > 0;
+      allow update, delete: if true;
+    }
+
+    // User profiles & customer records
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+
+    // Administrator registry
+    match /admins/{adminId} {
+      allow read, write: if true;
+    }
+
+    // Administrator Audit Logs
+    match /adminAuditLogs/{logId} {
+      allow read, write: if true;
+    }
+
+    // Health check test connection path
+    match /test/connection {
+      allow read, write: if true;
+    }
+
+    // Default deny for unmapped paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

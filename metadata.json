@@ -1,0 +1,6 @@
+{
+  "name": "Zarven — Premium Clothing E-commerce",
+  "description": "Luxury fashion platform with real-time Firestore sync, dynamic advertising banners, administrative studio, and versioned source code releases.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

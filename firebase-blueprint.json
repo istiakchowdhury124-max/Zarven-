@@ -1,0 +1,211 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Premium apparel product in the Zarven luxury catalog",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200 },
+        "slug": { "type": "string", "maxLength": 200 },
+        "sku": { "type": "string", "maxLength": 64 },
+        "description": { "type": "string", "maxLength": 3000 },
+        "category": { "type": "string", "maxLength": 64 },
+        "price": { "type": "number" },
+        "salePrice": { "type": "number" },
+        "sizes": { "type": "array" },
+        "colors": { "type": "array" },
+        "images": { "type": "array" },
+        "stock": { "type": "number" },
+        "tags": { "type": "array" },
+        "isFeatured": { "type": "boolean" },
+        "isNewArrival": { "type": "boolean" },
+        "isBestSeller": { "type": "boolean" },
+        "isTrending": { "type": "boolean" },
+        "published": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "title", "sku", "category", "price", "stock", "published"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Product collection category",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 100 },
+        "slug": { "type": "string", "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 500 },
+        "imageUrl": { "type": "string", "maxLength": 1000 },
+        "productCount": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "slug"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer purchase order",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "orderNumber": { "type": "string", "maxLength": 64 },
+        "customerId": { "type": "string", "maxLength": 128 },
+        "customerName": { "type": "string", "maxLength": 128 },
+        "customerEmail": { "type": "string", "maxLength": 128 },
+        "customerPhone": { "type": "string", "maxLength": 32 },
+        "shippingAddress": { "type": "object" },
+        "items": { "type": "array" },
+        "subtotal": { "type": "number" },
+        "shippingFee": { "type": "number" },
+        "tax": { "type": "number" },
+        "total": { "type": "number" },
+        "currency": { "type": "string", "maxLength": 10 },
+        "status": { "type": "string", "maxLength": 32 },
+        "paymentStatus": { "type": "string", "maxLength": 32 },
+        "paymentMethod": { "type": "string", "maxLength": 64 },
+        "transactionRef": { "type": "string", "maxLength": 128 },
+        "statusHistory": { "type": "array" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "orderNumber", "customerName", "customerEmail", "customerPhone", "total", "status", "paymentMethod"]
+    },
+    "Banner": {
+      "title": "Banner",
+      "description": "Configurable storefront advertising banner",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200 },
+        "subtitle": { "type": "string", "maxLength": 300 },
+        "placement": { "type": "string", "maxLength": 64 },
+        "imageUrl": { "type": "string", "maxLength": 1000 },
+        "mobileImageUrl": { "type": "string", "maxLength": 1000 },
+        "targetUrl": { "type": "string", "maxLength": 500 },
+        "ctaText": { "type": "string", "maxLength": 64 },
+        "startDate": { "type": "string", "maxLength": 64 },
+        "endDate": { "type": "string", "maxLength": 64 },
+        "active": { "type": "boolean" },
+        "displayOrder": { "type": "number" },
+        "clickCount": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "title", "placement", "active"]
+    },
+    "SiteSettings": {
+      "title": "SiteSettings",
+      "description": "Global website configuration and theme settings",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "siteName": { "type": "string", "maxLength": 100 },
+        "tagline": { "type": "string", "maxLength": 200 },
+        "logoUrl": { "type": "string", "maxLength": 1000 },
+        "announcementBarText": { "type": "string", "maxLength": 255 },
+        "announcementActive": { "type": "boolean" },
+        "currency": { "type": "string", "maxLength": 10 },
+        "currencySymbol": { "type": "string", "maxLength": 10 },
+        "freeShippingThreshold": { "type": "number" },
+        "standardShippingFee": { "type": "number" },
+        "taxRate": { "type": "number" },
+        "contactEmail": { "type": "string", "maxLength": 128 },
+        "contactPhone": { "type": "string", "maxLength": 64 },
+        "address": { "type": "string", "maxLength": 300 },
+        "socialLinks": { "type": "object" },
+        "enabledSections": { "type": "object" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "siteName", "currency"]
+    },
+    "User": {
+      "title": "User",
+      "description": "Registered customer profile",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 128 },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "phone": { "type": "string", "maxLength": 32 },
+        "role": { "type": "string", "maxLength": 32 },
+        "shippingAddress": { "type": "object" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    },
+    "AdminAuditLog": {
+      "title": "AdminAuditLog",
+      "description": "Audit trail log of sensitive administrator actions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "adminUid": { "type": "string", "maxLength": 128 },
+        "adminEmail": { "type": "string", "maxLength": 128 },
+        "action": { "type": "string", "maxLength": 100 },
+        "target": { "type": "string", "maxLength": 128 },
+        "details": { "type": "string", "maxLength": 1000 },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "adminUid", "action", "timestamp"]
+    },
+    "Release": {
+      "title": "Release",
+      "description": "Versioned deployable source-code archive package",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "version": { "type": "string", "maxLength": 32 },
+        "releaseDate": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 200 },
+        "changelog": { "type": "array" },
+        "zipFileName": { "type": "string", "maxLength": 128 },
+        "fileSizeBytes": { "type": "number" },
+        "checksum": { "type": "string", "maxLength": 128 },
+        "downloadUrl": { "type": "string", "maxLength": 500 },
+        "verified": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "version", "releaseDate", "title", "zipFileName"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Catalog of Zarven luxury apparel products"
+    },
+    "/categories/{categoryId}": {
+      "schema": "Category",
+      "description": "Fashion product categories"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Customer purchase orders"
+    },
+    "/banners/{bannerId}": {
+      "schema": "Banner",
+      "description": "Dynamic marketing and advertising banners"
+    },
+    "/siteSettings/{settingId}": {
+      "schema": "SiteSettings",
+      "description": "Global storefront settings and layout flags"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and credentials"
+    },
+    "/admins/{adminId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Authorized administrator registry"
+    },
+    "/adminAuditLogs/{logId}": {
+      "schema": "AdminAuditLog",
+      "description": "Security audit log entries for administrator actions"
+    },
+    "/releases/{releaseId}": {
+      "schema": "Release",
+      "description": "Versioned source code download packages"
+    }
+  }
+}
