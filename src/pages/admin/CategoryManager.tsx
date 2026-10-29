@@ -227,11 +227,14 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({ onOpenStorefro
         <div className="relative flex-1">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#71717a]" />
           <input
+            id="admin-category-search"
+            name="categorySearch"
             type="text"
             placeholder="Search categories by name, slug or description..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-9 pr-3 py-2 bg-[#171722] border border-[#272738] text-white text-xs rounded-xs focus:outline-hidden focus:border-[#d4af37] font-mono placeholder:text-[#52525b]"
+            autoComplete="off"
           />
         </div>
         {searchTerm && (

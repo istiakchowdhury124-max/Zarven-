@@ -104,6 +104,13 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   logoUrl: '/assets/aistudio/1792832789266_1792835490423edit_539d88fb.jpg',
   announcementBarText: 'Complimentary Express Shipping on all orders over ৳5,000 | Use code ZARVEN10 for 10% off',
   announcementActive: true,
+  announcementItems: [
+    'JAMUNA BRANCH',
+    'CHITTAGONG BRANCH',
+    'DHAKA GULSHAN FLAGSHIP',
+    'WHITE GLOVE ALL BANGLADESH DELIVERY'
+  ],
+  announcementSpeed: 'normal',
   currency: 'BDT',
   currencySymbol: '৳',
   freeShippingThreshold: 0,
@@ -113,8 +120,11 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   contactPhone: '+880 1711-000000',
   address: 'Level 12, Zarven Atelier, Gulshan Avenue, Dhaka 1212, Bangladesh',
   socialLinks: {
-    instagram: 'https://instagram.com/zarven.official',
     facebook: 'https://facebook.com/zarven.official',
+    whatsapp: 'https://wa.me/8801711000000',
+    instagram: 'https://instagram.com/zarven.official',
+    youtube: 'https://youtube.com/@zarven',
+    tiktok: 'https://tiktok.com/@zarven',
     twitter: 'https://twitter.com/zarven',
     pinterest: 'https://pinterest.com/zarven'
   },

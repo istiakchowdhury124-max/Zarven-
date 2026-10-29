@@ -139,6 +139,8 @@ export interface SiteSettings {
   logoUrl?: string;
   announcementBarText: string;
   announcementActive: boolean;
+  announcementItems?: string[];
+  announcementSpeed?: 'normal' | 'fast' | 'slow';
   currency: string;
   currencySymbol: string;
   freeShippingThreshold: number;
@@ -148,8 +150,11 @@ export interface SiteSettings {
   contactPhone: string;
   address: string;
   socialLinks: {
-    instagram?: string;
     facebook?: string;
+    whatsapp?: string;
+    instagram?: string;
+    youtube?: string;
+    tiktok?: string;
     twitter?: string;
     pinterest?: string;
   };

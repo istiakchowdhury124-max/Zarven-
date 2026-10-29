@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSiteSettings } from '../../context/SiteSettingsContext';
-import { Check, Save, Plus, Trash2, FileText, Shield } from 'lucide-react';
+import { Check, Save, Plus, Trash2, FileText, Shield, Megaphone, Eye, Sparkles } from 'lucide-react';
 import { ImageAttachmentUploader } from '../../components/admin/ImageAttachmentUploader';
 
 export const CustomizationManager: React.FC = () => {
@@ -12,6 +12,13 @@ export const CustomizationManager: React.FC = () => {
     logoUrl: settings.logoUrl || '',
     announcementBarText: settings.announcementBarText,
     announcementActive: settings.announcementActive,
+    announcementItems: settings.announcementItems || [
+      'JAMUNA BRANCH',
+      'CHITTAGONG BRANCH',
+      'DHAKA GULSHAN FLAGSHIP',
+      'WHITE GLOVE ALL BANGLADESH DELIVERY'
+    ],
+    announcementSpeed: settings.announcementSpeed || 'normal',
     contactEmail: settings.contactEmail,
     contactPhone: settings.contactPhone,
     address: settings.address,
@@ -64,6 +71,8 @@ export const CustomizationManager: React.FC = () => {
         logoUrl: settings.logoUrl || '',
         announcementBarText: settings.announcementBarText,
         announcementActive: settings.announcementActive,
+        announcementItems: settings.announcementItems || prev.announcementItems,
+        announcementSpeed: settings.announcementSpeed || prev.announcementSpeed,
         contactEmail: settings.contactEmail,
         contactPhone: settings.contactPhone,
         address: settings.address,
@@ -76,6 +85,32 @@ export const CustomizationManager: React.FC = () => {
 
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [newAnnouncementItem, setNewAnnouncementItem] = useState('');
+
+  const handleAddAnnouncementItem = (textToAdd?: string) => {
+    const val = (textToAdd ?? newAnnouncementItem).trim();
+    if (!val) return;
+    setFormData(prev => ({
+      ...prev,
+      announcementItems: [...(prev.announcementItems || []), val]
+    }));
+    if (!textToAdd) setNewAnnouncementItem('');
+  };
+
+  const handleRemoveAnnouncementItem = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      announcementItems: (prev.announcementItems || []).filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleUpdateAnnouncementItem = (index: number, val: string) => {
+    setFormData(prev => {
+      const copy = [...(prev.announcementItems || [])];
+      copy[index] = val;
+      return { ...prev, announcementItems: copy };
+    });
+  };
 
   const handleToggleSection = (sectionKey: keyof typeof formData.enabledSections) => {
     setFormData(prev => ({
@@ -169,6 +204,14 @@ export const CustomizationManager: React.FC = () => {
         </span>
         <button
           type="button"
+          onClick={() => document.getElementById('announcement-bar-editor')?.scrollIntoView({ behavior: 'smooth' })}
+          className="px-2.5 py-1 bg-[#d4af37]/20 hover:bg-[#d4af37]/35 text-[#d4af37] border border-[#d4af37]/80 rounded-xs cursor-pointer text-[11px] font-semibold flex items-center gap-1.5"
+        >
+          <Megaphone className="w-3.5 h-3.5" />
+          <span>📢 Announcement Bar (অ্যানাউন্সমেন্ট বার এডিটর)</span>
+        </button>
+        <button
+          type="button"
           onClick={() => document.getElementById('homepage-toggles')?.scrollIntoView({ behavior: 'smooth' })}
           className="px-2.5 py-1 bg-[#181824] hover:bg-[#202030] text-[#d4d4d8] hover:text-white border border-[#2a2a3e] rounded-xs cursor-pointer text-[11px]"
         >
@@ -177,10 +220,10 @@ export const CustomizationManager: React.FC = () => {
         <button
           type="button"
           onClick={() => document.getElementById('privacy-section-editor')?.scrollIntoView({ behavior: 'smooth' })}
-          className="px-2.5 py-1 bg-[#d4af37]/15 hover:bg-[#d4af37]/25 text-[#d4af37] border border-[#d4af37]/60 rounded-xs cursor-pointer text-[11px] font-semibold flex items-center gap-1.5 animate-pulse"
+          className="px-2.5 py-1 bg-[#d4af37]/15 hover:bg-[#d4af37]/25 text-[#d4af37] border border-[#d4af37]/60 rounded-xs cursor-pointer text-[11px] font-semibold flex items-center gap-1.5"
         >
           <Shield className="w-3.5 h-3.5" />
-          <span>🛡️ Privacy Section (প্রাইভেসি এডিটর)</span>
+          <span>🛡️ Privacy Section</span>
         </button>
         <button
           type="button"
@@ -188,6 +231,13 @@ export const CustomizationManager: React.FC = () => {
           className="px-2.5 py-1 bg-[#181824] hover:bg-[#202030] text-[#d4d4d8] hover:text-white border border-[#2a2a3e] rounded-xs cursor-pointer text-[11px]"
         >
           Brand & Logo
+        </button>
+        <button
+          type="button"
+          onClick={() => document.getElementById('social-links-section')?.scrollIntoView({ behavior: 'smooth' })}
+          className="px-2.5 py-1 bg-[#181824] hover:bg-[#202030] text-[#d4d4d8] hover:text-white border border-[#2a2a3e] rounded-xs cursor-pointer text-[11px] flex items-center gap-1.5"
+        >
+          <span>🌐 Follow Us (সোশ্যাল মিডিয়া)</span>
         </button>
       </div>
 
@@ -263,34 +313,258 @@ export const CustomizationManager: React.FC = () => {
           </div>
         </div>
 
-        {/* Announcement Bar */}
-        <div className="p-6 bg-[#121218] border border-[#20202c] rounded-xs space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="font-serif text-sm font-semibold text-white uppercase tracking-wider">
-              Top Announcement Bar
-            </h3>
-            <label className="flex items-center gap-2 cursor-pointer text-white">
+        {/* Announcement Bar & Running Marquee Editor */}
+        <div id="announcement-bar-editor" className="p-6 bg-[#121218] border border-[#272738] rounded-xs space-y-6 scroll-mt-20">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#20202e]">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 bg-[#d4af37]/10 border border-[#d4af37]/30 text-[#d4af37] rounded-xs">
+                <Megaphone className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-serif text-base font-semibold text-white uppercase tracking-wider">
+                    Announcement Bar & Running Marquee (অ্যানাউন্সমেন্ট বার এডিটর)
+                  </h3>
+                  <span className={`px-2 py-0.5 text-[10px] font-mono rounded-xs uppercase ${
+                    formData.announcementActive 
+                      ? 'bg-emerald-950/80 text-emerald-400 border border-emerald-800' 
+                      : 'bg-red-950/80 text-red-400 border border-red-800'
+                  }`}>
+                    {formData.announcementActive ? 'Live / Active' : 'Hidden / Off'}
+                  </span>
+                </div>
+                <p className="text-[#8e8ea0] text-[11px] mt-0.5">
+                  ব্যানারের নিচের চলমান মারকুই বার (Marquee) এবং স্টোরফ্রন্টের টপ নোটিশ ও শাখা সমূহ এডিট করুন।
+                </p>
+              </div>
+            </div>
+
+            <label className="flex items-center gap-2.5 cursor-pointer bg-[#181824] px-4 py-2 border border-[#2e2e42] hover:border-[#d4af37]/60 rounded-xs transition-colors self-start sm:self-auto">
               <input
                 type="checkbox"
                 checked={formData.announcementActive}
                 onChange={(e) => setFormData(prev => ({ ...prev, announcementActive: e.target.checked }))}
-                className="accent-[#d4af37]"
+                className="accent-[#d4af37] w-4 h-4 cursor-pointer"
               />
-              <span className="font-mono text-[11px]">Display Bar</span>
+              <span className="font-mono text-xs text-white font-medium">
+                {formData.announcementActive ? '✓ Bar is Displayed (চালু)' : '✕ Bar is Hidden (বন্ধ)'}
+              </span>
             </label>
           </div>
 
-          <div>
-            <label className="text-[#a1a1aa] uppercase font-mono tracking-wider block mb-1">
-              Announcement Message
+          {/* Live Marquee Preview Box */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#d4af37] flex items-center gap-1.5">
+                <Eye className="w-3.5 h-3.5" />
+                <span>Live Storefront Marquee Preview (লাইভ প্রিভিউ)</span>
+              </span>
+              <span className="text-[10px] font-mono text-[#71717a]">
+                Speed: {formData.announcementSpeed || 'normal'}
+              </span>
+            </div>
+            <div className="bg-black border border-[#2b2b3d] py-3 px-2 overflow-hidden select-none rounded-xs relative">
+              <div 
+                className="animate-marquee whitespace-nowrap flex items-center gap-8 text-xs font-bold uppercase tracking-wider text-white"
+                style={{
+                  animationDuration: formData.announcementSpeed === 'fast' 
+                    ? '18s' 
+                    : formData.announcementSpeed === 'slow' 
+                      ? '38s' 
+                      : '26s'
+                }}
+              >
+                {formData.announcementBarText && (
+                  <span className="flex items-center gap-2 text-[#d4af37]">
+                    <span>★</span>
+                    <span>{formData.announcementBarText}</span>
+                  </span>
+                )}
+                <span className="text-white font-black">•</span>
+                {(formData.announcementItems || []).map((item, idx) => (
+                  <React.Fragment key={`prev-1-${idx}`}>
+                    <span className="tracking-widest font-mono text-white">{item}</span>
+                    <span className="text-white font-black">•</span>
+                  </React.Fragment>
+                ))}
+                {/* Second track for loop */}
+                {formData.announcementBarText && (
+                  <span className="flex items-center gap-2 text-[#d4af37]">
+                    <span>★</span>
+                    <span>{formData.announcementBarText}</span>
+                  </span>
+                )}
+                <span className="text-white font-black">•</span>
+                {(formData.announcementItems || []).map((item, idx) => (
+                  <React.Fragment key={`prev-2-${idx}`}>
+                    <span className="tracking-widest font-mono text-white">{item}</span>
+                    <span className="text-white font-black">•</span>
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* 1. Main Announcement / Offer Text */}
+          <div className="space-y-1.5">
+            <label className="text-[#a1a1aa] uppercase font-mono tracking-wider block">
+              1. Main Headline / Special Offer Text (মূল নোটিশ বা বিশেষ অফার)
             </label>
             <input
               type="text"
               value={formData.announcementBarText}
               onChange={(e) => setFormData(prev => ({ ...prev, announcementBarText: e.target.value }))}
-              placeholder="e.g. Complimentary expedited delivery on all orders over ৳5,000"
-              className="w-full bg-[#181824] border border-[#272738] text-white px-3.5 py-2.5 rounded-xs focus:outline-hidden focus:border-[#d4af37]"
+              placeholder="e.g. Complimentary Express Shipping on all orders over ৳5,000 | Use code ZARVEN10 for 10% off"
+              className="w-full bg-[#181824] border border-[#272738] text-white px-3.5 py-2.5 rounded-xs focus:outline-hidden focus:border-[#d4af37] font-medium"
             />
+            <p className="text-[10px] text-[#71717a]">
+              This text is highlighted in gold (★) at the start of the marquee cycle.
+            </p>
+          </div>
+
+          {/* 2. Marquee Ticker Items / Branches */}
+          <div className="space-y-3 pt-2 border-t border-[#1e1e2c]">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <label className="text-[#a1a1aa] uppercase font-mono tracking-wider block">
+                  2. Running Branch & Outlet Items (চলমান শাখা, আউটলেট ও ট্যাগলাইন সমূহ)
+                </label>
+                <p className="text-[11px] text-[#71717a]">
+                  Each item will scroll continuously separated by stylish bullets (•).
+                </p>
+              </div>
+              <span className="text-[10px] font-mono text-[#d4af37]">
+                {(formData.announcementItems || []).length} Items active
+              </span>
+            </div>
+
+            {/* Quick Presets */}
+            <div className="flex flex-wrap items-center gap-1.5 p-2 bg-[#14141e] border border-[#222234] rounded-xs text-[11px]">
+              <span className="text-[#71717a] font-mono text-[10px] uppercase mr-1">Quick Add:</span>
+              <button
+                type="button"
+                onClick={() => handleAddAnnouncementItem('JAMUNA FUTURE PARK ATELIER')}
+                className="px-2 py-0.5 bg-[#1b1b28] hover:bg-[#252538] text-[#d4af37] border border-[#2e2e46] rounded-xs cursor-pointer"
+              >
+                + Jamuna Atelier
+              </button>
+              <button
+                type="button"
+                onClick={() => handleAddAnnouncementItem('CHITTAGONG OUTLET')}
+                className="px-2 py-0.5 bg-[#1b1b28] hover:bg-[#252538] text-[#d4af37] border border-[#2e2e46] rounded-xs cursor-pointer"
+              >
+                + Chittagong Outlet
+              </button>
+              <button
+                type="button"
+                onClick={() => handleAddAnnouncementItem('DHAKA GULSHAN FLAGSHIP')}
+                className="px-2 py-0.5 bg-[#1b1b28] hover:bg-[#252538] text-[#d4af37] border border-[#2e2e46] rounded-xs cursor-pointer"
+              >
+                + Gulshan Flagship
+              </button>
+              <button
+                type="button"
+                onClick={() => handleAddAnnouncementItem('WHITE GLOVE ALL BANGLADESH DELIVERY')}
+                className="px-2 py-0.5 bg-[#1b1b28] hover:bg-[#252538] text-[#d4af37] border border-[#2e2e46] rounded-xs cursor-pointer"
+              >
+                + White Glove Delivery
+              </button>
+              <button
+                type="button"
+                onClick={() => handleAddAnnouncementItem('HOTLINE: 01711-000000')}
+                className="px-2 py-0.5 bg-[#1b1b28] hover:bg-[#252538] text-[#d4af37] border border-[#2e2e46] rounded-xs cursor-pointer"
+              >
+                + Hotline
+              </button>
+            </div>
+
+            {/* List of current items */}
+            <div className="space-y-2">
+              {(formData.announcementItems || []).map((item, idx) => (
+                <div key={idx} className="flex items-center gap-2 bg-[#161622] border border-[#252536] p-2 rounded-xs">
+                  <span className="text-[#d4af37] font-mono text-[11px] w-6 text-center shrink-0">
+                    #{idx + 1}
+                  </span>
+                  <input
+                    type="text"
+                    value={item}
+                    onChange={(e) => handleUpdateAnnouncementItem(idx, e.target.value)}
+                    className="flex-1 bg-[#101018] border border-[#232334] text-white px-3 py-1.5 rounded-xs text-xs font-mono focus:border-[#d4af37] focus:outline-hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveAnnouncementItem(idx)}
+                    className="p-1.5 text-[#ef4444] hover:bg-[#ef4444]/10 rounded-xs transition-colors cursor-pointer shrink-0"
+                    title="Remove item"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Add Custom Item Row */}
+            <div className="flex items-center gap-2 pt-1">
+              <input
+                type="text"
+                value={newAnnouncementItem}
+                onChange={(e) => setNewAnnouncementItem(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleAddAnnouncementItem();
+                  }
+                }}
+                placeholder="নতুন শাখা বা টেক্সট লিখুন (e.g. UTTARA SHOWROOM বা 100% ORIGINAL)"
+                className="flex-1 bg-[#181824] border border-[#2e2e42] text-white px-3.5 py-2 rounded-xs text-xs font-mono focus:border-[#d4af37] focus:outline-hidden"
+              />
+              <button
+                type="button"
+                onClick={() => handleAddAnnouncementItem()}
+                className="px-4 py-2 bg-[#1e1e2d] hover:bg-[#28283d] text-[#d4af37] border border-[#d4af37]/40 rounded-xs text-xs font-mono font-semibold flex items-center gap-1.5 cursor-pointer shrink-0"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Add Item</span>
+              </button>
+            </div>
+          </div>
+
+          {/* 3. Speed selector & Save Shortcut */}
+          <div className="pt-4 border-t border-[#1e1e2c] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <label className="text-[#a1a1aa] uppercase font-mono tracking-wider text-[11px] shrink-0">
+                Ticker Speed (গতি):
+              </label>
+              <div className="flex items-center gap-1 bg-[#14141e] p-1 border border-[#252538] rounded-xs text-xs font-mono">
+                {[
+                  { id: 'fast', label: 'Fast (18s)' },
+                  { id: 'normal', label: 'Normal (26s)' },
+                  { id: 'slow', label: 'Smooth / Slow (38s)' }
+                ].map(spd => (
+                  <button
+                    key={spd.id}
+                    type="button"
+                    onClick={() => setFormData(prev => ({ ...prev, announcementSpeed: spd.id as any }))}
+                    className={`px-2.5 py-1 rounded-xs transition-colors cursor-pointer ${
+                      (formData.announcementSpeed || 'normal') === spd.id
+                        ? 'bg-[#d4af37] text-black font-bold'
+                        : 'text-[#a1a1aa] hover:text-white'
+                    }`}
+                  >
+                    {spd.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSaving}
+              className="px-5 py-2.5 bg-[#d4af37] hover:bg-[#e5c158] text-[#0a0a0c] font-semibold text-xs uppercase tracking-wider rounded-xs cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-[#d4af37]/20 transition-all self-end sm:self-auto"
+            >
+              <Save className="w-4 h-4" />
+              <span>{isSaving ? 'Saving...' : 'Save Announcement Bar'}</span>
+            </button>
           </div>
         </div>
 
@@ -572,6 +846,114 @@ export const CustomizationManager: React.FC = () => {
               onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
               className="w-full bg-[#181824] border border-[#272738] text-white px-3.5 py-2.5 rounded-xs focus:outline-hidden focus:border-[#d4af37]"
             />
+          </div>
+        </div>
+
+        {/* Social Media Channels & Follow Us Links */}
+        <div id="social-links-section" className="p-6 bg-[#121218] border border-[#20202c] rounded-xs space-y-4 scroll-mt-20">
+          <div className="flex items-center justify-between pb-2 border-b border-[#1f1f2c]">
+            <h3 className="font-serif text-sm font-semibold text-white uppercase tracking-wider">
+              Social Media Channels & Follow Us Links (সোশ্যাল মিডিয়া ও ফলো আস লিংক)
+            </h3>
+            <span className="text-[10px] font-mono text-[#d4af37] uppercase">
+              Footer Follow Us
+            </span>
+          </div>
+
+          <p className="text-[#8e8ea0] text-[11px] leading-relaxed">
+            ফুটারের একদম ডানে থাকা <strong>FOLLOW US</strong> সেকশনের ফেসবুক, হোয়াটসঅ্যাপ, ইনস্টাগ্রাম, ইউটিউব এবং টিকটক লিংক এখানে সেট করুন। ভিজিটররা ক্লিক করলে সরাসরি আপনার অফিসিয়াল পেজ ওপেন হবে।
+          </p>
+
+          <div className="space-y-3.5 pt-1">
+            {/* Facebook */}
+            <div>
+              <label className="text-[#a1a1aa] uppercase font-mono tracking-wider text-[11px] block mb-1 flex items-center gap-1.5">
+                <span className="text-[#1877F2] font-bold">f</span>
+                <span>Facebook Page / Profile URL</span>
+              </label>
+              <input
+                type="url"
+                value={formData.socialLinks.facebook || ''}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  socialLinks: { ...prev.socialLinks, facebook: e.target.value }
+                }))}
+                placeholder="https://facebook.com/your-brand"
+                className="w-full bg-[#181824] border border-[#272738] focus:border-[#d4af37] text-white px-3.5 py-2 rounded-xs font-mono text-xs focus:outline-hidden"
+              />
+            </div>
+
+            {/* WhatsApp */}
+            <div>
+              <label className="text-[#a1a1aa] uppercase font-mono tracking-wider text-[11px] block mb-1 flex items-center gap-1.5">
+                <span className="text-[#25D366] font-bold">wa</span>
+                <span>WhatsApp Number or Direct Link</span>
+              </label>
+              <input
+                type="text"
+                value={formData.socialLinks.whatsapp || ''}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  socialLinks: { ...prev.socialLinks, whatsapp: e.target.value }
+                }))}
+                placeholder="https://wa.me/8801700000000 বা +8801700000000"
+                className="w-full bg-[#181824] border border-[#272738] focus:border-[#d4af37] text-white px-3.5 py-2 rounded-xs font-mono text-xs focus:outline-hidden"
+              />
+            </div>
+
+            {/* Instagram */}
+            <div>
+              <label className="text-[#a1a1aa] uppercase font-mono tracking-wider text-[11px] block mb-1 flex items-center gap-1.5">
+                <span className="text-[#E4405F] font-bold">ig</span>
+                <span>Instagram Profile URL</span>
+              </label>
+              <input
+                type="url"
+                value={formData.socialLinks.instagram || ''}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  socialLinks: { ...prev.socialLinks, instagram: e.target.value }
+                }))}
+                placeholder="https://instagram.com/your-brand"
+                className="w-full bg-[#181824] border border-[#272738] focus:border-[#d4af37] text-white px-3.5 py-2 rounded-xs font-mono text-xs focus:outline-hidden"
+              />
+            </div>
+
+            {/* YouTube */}
+            <div>
+              <label className="text-[#a1a1aa] uppercase font-mono tracking-wider text-[11px] block mb-1 flex items-center gap-1.5">
+                <span className="text-[#FF0000] font-bold">yt</span>
+                <span>YouTube Channel URL</span>
+              </label>
+              <input
+                type="url"
+                value={formData.socialLinks.youtube || ''}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  socialLinks: { ...prev.socialLinks, youtube: e.target.value }
+                }))}
+                placeholder="https://youtube.com/@your-channel"
+                className="w-full bg-[#181824] border border-[#272738] focus:border-[#d4af37] text-white px-3.5 py-2 rounded-xs font-mono text-xs focus:outline-hidden"
+              />
+            </div>
+
+            {/* TikTok */}
+            <div>
+              <label className="text-[#a1a1aa] uppercase font-mono tracking-wider text-[11px] block mb-1 flex items-center gap-1.5">
+                <span className="text-[#00F2FE] font-bold">tt</span>
+                <span>TikTok Profile URL</span>
+              </label>
+              <input
+                type="url"
+                value={formData.socialLinks.tiktok || ''}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  socialLinks: { ...prev.socialLinks, tiktok: e.target.value }
+                }))}
+                placeholder="https://tiktok.com/@your-profile"
+                className="w-full bg-[#181824] border border-[#272738] focus:border-[#d4af37] text-white px-3.5 py-2 rounded-xs font-mono text-xs focus:outline-hidden"
+              />
+            </div>
           </div>
         </div>
 

@@ -9,8 +9,9 @@
 
   body {
     font-family: var(--font-sans);
-    background-color: #0c0c0e;
-    color: #f3f3f5;
+    background-color: #ffffff;
+    color: #000000;
+    font-weight: 500;
     overflow-x: hidden;
   }
 
@@ -26,16 +27,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0e0e12;
+  background: #f4f4f7;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272e;
+  background: #d4d4d8;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #d4af37;
+  background: #c5a059;
 }
 
 /* Subtle image shimmer animation */
@@ -45,7 +46,24 @@
 }
 
 .skeleton-shimmer {
-  background: linear-gradient(90deg, #18181f 25%, #24242d 50%, #18181f 75%);
+  background: linear-gradient(90deg, #f4f4f6 25%, #e9e9ee 50%, #f4f4f6 75%);
   background-size: 200% 100%;
   animation: shimmer 2s infinite ease-in-out;
 }
+
+/* Continuous running announcement marquee */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+

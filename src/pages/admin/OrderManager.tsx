@@ -138,15 +138,20 @@ export const OrderManager: React.FC = () => {
         <div className="flex-1 relative">
           <Search className="w-4 h-4 text-[#71717a] absolute left-3 top-3" />
           <input
+            id="admin-order-search"
+            name="orderSearch"
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by Order #, customer name, email, or phone..."
             className="w-full bg-[#181824] border border-[#272738] text-xs text-white pl-9 pr-3 py-2 rounded-xs focus:outline-hidden focus:border-[#d4af37]"
+            autoComplete="off"
           />
         </div>
 
         <select
+          id="admin-order-status-filter"
+          name="orderStatusFilter"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
           className="bg-[#181824] border border-[#272738] text-xs text-white px-3 py-2 rounded-xs focus:outline-hidden focus:border-[#d4af37]"

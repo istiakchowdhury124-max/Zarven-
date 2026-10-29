@@ -124,11 +124,14 @@ export const CustomerManager: React.FC = () => {
         <div className="relative">
           <Search className="w-4 h-4 text-[#71717a] absolute left-3 top-3" />
           <input
+            id="admin-customer-search"
+            name="customerSearch"
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by client name, email, or telephone number..."
             className="w-full bg-[#181824] border border-[#272738] text-xs text-white pl-9 pr-3 py-2 rounded-xs focus:outline-hidden focus:border-[#d4af37]"
+            autoComplete="off"
           />
         </div>
       </div>

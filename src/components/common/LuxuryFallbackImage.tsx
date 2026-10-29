@@ -5,7 +5,7 @@ interface LuxuryFallbackImageProps {
   alt: string;
   className?: string;
   category?: string;
-  aspectRatio?: '4/3' | '16/9' | '1/1' | '3/4';
+  aspectRatio?: '4/3' | '16/9' | '1/1' | '3/4' | '4/5';
 }
 
 export const LuxuryFallbackImage: React.FC<LuxuryFallbackImageProps> = ({

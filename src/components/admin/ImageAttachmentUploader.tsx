@@ -121,6 +121,8 @@ export const ImageAttachmentUploader: React.FC<ImageAttachmentUploaderProps> = (
       {/* Hidden Native File Input (Launches Device Gallery / Photos on Mobile) */}
       <input
         ref={fileInputRef}
+        id="image-file-upload-input"
+        name="imageUploadFile"
         type="file"
         accept="image/*"
         multiple={multiple}

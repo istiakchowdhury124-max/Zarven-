@@ -72,6 +72,14 @@ export const SiteSettingsProvider: React.FC<{ children: React.ReactNode }> = ({ 
             ...DEFAULT_SITE_SETTINGS,
             ...remoteData,
             logoUrl: remoteData.logoUrl?.trim() ? remoteData.logoUrl : DEFAULT_SITE_SETTINGS.logoUrl,
+            announcementItems: Array.isArray(remoteData.announcementItems)
+              ? remoteData.announcementItems
+              : (DEFAULT_SITE_SETTINGS.announcementItems || []),
+            announcementSpeed: remoteData.announcementSpeed || 'normal',
+            socialLinks: {
+              ...DEFAULT_SITE_SETTINGS.socialLinks,
+              ...(remoteData.socialLinks || {})
+            },
             footerPrivacy: remoteData.footerPrivacy || DEFAULT_SITE_SETTINGS.footerPrivacy,
             buttonSettings: {
               showOrderNow: remoteData.buttonSettings?.showOrderNow ?? DEFAULT_SITE_SETTINGS.buttonSettings?.showOrderNow ?? true,

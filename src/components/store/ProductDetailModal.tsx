@@ -118,16 +118,16 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       {/* Backdrop */}
       <div 
         onClick={onClose}
-        className="fixed inset-0 bg-black/85 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
       />
 
       <div className="relative min-h-screen flex items-center justify-center p-3 sm:p-6 lg:p-8">
-        <div className="relative w-full max-w-4xl bg-[#0f0f15] border border-[#272736] rounded-xs shadow-2xl overflow-hidden my-6">
+        <div className="relative w-full max-w-4xl bg-[#ffffff] border border-[#e5e5eb] rounded-xs shadow-2xl overflow-hidden my-6 text-[#111116]">
           
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-30 p-2 text-[#71717a] hover:text-white bg-black/50 hover:bg-black/90 rounded-full backdrop-blur-xs transition-colors cursor-pointer"
+            className="absolute top-4 right-4 z-30 p-2 text-[#52525b] hover:text-[#111116] bg-white/80 hover:bg-white rounded-full backdrop-blur-xs transition-colors cursor-pointer border border-[#e5e5eb] shadow-xs"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -136,8 +136,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2">
             
             {/* Left: Gallery & Zoom Preview */}
-            <div className="p-6 sm:p-8 bg-[#0a0a0d] flex flex-col justify-between border-b md:border-b-0 md:border-r border-[#20202d]">
-              <div className="relative aspect-3/4 rounded-xs overflow-hidden bg-[#14141c] mb-4">
+            <div className="p-6 sm:p-8 bg-[#f8f8fa] flex flex-col justify-between border-b md:border-b-0 md:border-r border-[#e5e5eb]">
+              <div className="relative aspect-3/4 rounded-xs overflow-hidden bg-[#f0f0f4] mb-4 border border-[#e5e5eb]">
                 <LuxuryFallbackImage
                   src={product.images[selectedImageIdx] || product.images[0]}
                   alt={product.title}
@@ -148,10 +148,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
                 {hasSale && (
                   <div className="absolute top-3 left-3 flex flex-col gap-1">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-[#d4af37] bg-black/90 px-2.5 py-1 border border-[#d4af37]/40">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-white bg-[#111116] px-2.5 py-1 border border-[#111116] shadow-xs">
                       Curated Sale · {discountPercentage}% Off
                     </span>
-                    <span className="text-[10px] font-mono text-emerald-400 bg-black/90 px-2 py-0.5 border border-emerald-800/40">
+                    <span className="text-[10px] font-mono text-emerald-800 bg-emerald-50 px-2 py-0.5 border border-emerald-200">
                       Save {currencyFormat(discountSavings)}
                     </span>
                   </div>
@@ -166,7 +166,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       key={idx}
                       onClick={() => setSelectedImageIdx(idx)}
                       className={`relative w-16 h-20 rounded-xs overflow-hidden shrink-0 border transition-colors cursor-pointer ${
-                        selectedImageIdx === idx ? 'border-[#d4af37]' : 'border-[#272736] opacity-60 hover:opacity-100'
+                        selectedImageIdx === idx ? 'border-[#111116] ring-1 ring-[#111116]' : 'border-[#e5e5eb] opacity-70 hover:opacity-100'
                       }`}
                     >
                       <img
@@ -182,62 +182,62 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             </div>
 
             {/* Right: Purchase Module */}
-            <div className="p-6 sm:p-8 flex flex-col justify-between space-y-6">
+            <div className="p-6 sm:p-8 flex flex-col justify-between space-y-6 bg-[#ffffff]">
               
               <div>
                 {/* Category & SKU */}
-                <div className="flex items-center gap-2 text-xs text-[#71717a] uppercase tracking-widest mb-1.5 font-mono">
+                <div className="flex items-center gap-2 text-xs text-black font-bold uppercase tracking-widest mb-1.5 font-mono">
                   <span>{product.category}</span>
                   <span>·</span>
                   <span>SKU: {product.sku}</span>
                 </div>
 
                 {/* Title */}
-                <h1 className="font-serif text-xl sm:text-2xl text-white font-semibold leading-snug mb-2">
+                <h1 className="font-serif text-xl sm:text-2xl text-black font-bold leading-snug mb-2">
                   {product.title}
                 </h1>
 
                 {/* Rating & Review counter */}
-                <div className="flex items-center gap-2 text-xs text-[#d4af37] mb-3">
+                <div className="flex items-center gap-2 text-xs text-[#b8860b] mb-3">
                   <div className="flex">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-[#d4af37]" />
+                      <Star key={i} className="w-3.5 h-3.5 fill-[#b8860b]" />
                     ))}
                   </div>
-                  <span className="font-mono text-white text-[11px]">4.9</span>
-                  <span className="text-[11px] text-[#71717a]">(18 Bespoke Reviews)</span>
+                  <span className="font-mono text-black text-[11px] font-black">4.9</span>
+                  <span className="text-[11px] text-black font-medium">(18 Bespoke Reviews)</span>
                 </div>
 
                 {/* Pricing & Stock Availability */}
                 <div className="flex items-baseline gap-3 mb-4 font-mono">
                   {hasSale ? (
                     <>
-                      <span className="text-2xl font-bold text-[#d4af37]">
+                      <span className="text-2xl font-black text-black">
                         {currencyFormat(product.salePrice!)}
                       </span>
-                      <span className="text-sm text-[#71717a] line-through">
+                      <span className="text-sm text-[#52525b] font-bold line-through">
                         {currencyFormat(product.price)}
                       </span>
                     </>
                   ) : (
-                    <span className="text-2xl font-bold text-white">
+                    <span className="text-2xl font-black text-black">
                       {currencyFormat(product.price)}
                     </span>
                   )}
                   
                   {product.stock > 0 ? (
-                    <span className="text-xs text-[#86efac] font-sans">
+                    <span className="text-xs text-emerald-800 font-sans font-bold">
                       In Stock ({product.stock} units available)
                     </span>
                   ) : (
-                    <span className="text-xs text-[#f87171] font-sans">
+                    <span className="text-xs text-rose-700 font-sans font-bold">
                       Currently Unavailable
                     </span>
                   )}
                 </div>
 
                 {/* Description */}
-                <p className="text-xs text-[#a1a1aa] leading-relaxed mb-6 font-light">
+                <p className="text-xs sm:text-sm text-black leading-relaxed mb-6 font-medium">
                   {product.description}
                 </p>
 
@@ -245,13 +245,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 {product.sizes && product.sizes.length > 0 && (
                   <div className="mb-4">
                     <div className="flex justify-between items-center text-xs mb-2">
-                      <span className="text-white font-medium">Select Size:</span>
+                      <span className="text-black font-bold">Select Size:</span>
                       <button
                         type="button"
                         onClick={() => setIsSizeGuideOpen(true)}
-                        className="text-[11px] text-[#d4af37] hover:underline flex items-center gap-1 cursor-pointer"
+                        className="text-[11px] text-[#b8860b] hover:underline flex items-center gap-1 cursor-pointer font-bold"
                       >
-                        <Ruler className="w-3 h-3" />
+                        <Ruler className="w-3 h-3 stroke-[2.5]" />
                         <span>Size Guide</span>
                       </button>
                     </div>
@@ -260,10 +260,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         <button
                           key={sz}
                           onClick={() => setSelectedSize(sz)}
-                          className={`px-3.5 py-1.5 text-xs font-mono uppercase tracking-wider rounded-xs border transition-colors cursor-pointer ${
+                          className={`px-3.5 py-1.5 text-xs font-mono uppercase tracking-wider rounded-xs border-2 transition-colors cursor-pointer ${
                             selectedSize === sz
-                              ? 'bg-white text-black border-white font-bold'
-                              : 'bg-[#14141c] text-[#d4d4d8] border-[#272738] hover:border-[#71717a]'
+                              ? 'bg-black text-white border-black font-black shadow-xs'
+                              : 'bg-[#ffffff] text-black border-black/30 hover:border-black font-bold'
                           }`}
                         >
                           {sz}
@@ -276,8 +276,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 {/* Color Selector */}
                 {product.colors && product.colors.length > 0 && (
                   <div className="mb-4">
-                    <span className="text-xs text-white font-medium block mb-2">
-                      Color Tone: <span className="text-[#a1a1aa]">{selectedColor}</span>
+                    <span className="text-xs text-black font-bold block mb-2">
+                      Color Tone: <span className="text-black font-bold">{selectedColor}</span>
                     </span>
                     <div className="flex items-center gap-2">
                       {product.colors.map((col) => (
@@ -286,11 +286,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                           onClick={() => setSelectedColor(col.name)}
                           title={col.name}
                           className={`relative w-7 h-7 rounded-full border-2 transition-transform p-0.5 cursor-pointer ${
-                            selectedColor === col.name ? 'border-[#d4af37] scale-110' : 'border-transparent'
+                            selectedColor === col.name ? 'border-black scale-110' : 'border-transparent'
                           }`}
                         >
                           <span
-                            className="block w-full h-full rounded-full border border-black/40"
+                            className="block w-full h-full rounded-full border border-gray-400"
                             style={{ backgroundColor: col.hex }}
                           />
                         </button>
@@ -301,26 +301,26 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
                 {/* Quantity Selector */}
                 <div className="mb-6 flex items-center gap-4">
-                  <span className="text-xs text-white font-medium">Quantity:</span>
-                  <div className="flex items-center border border-[#272738] bg-[#14141c] rounded-xs">
+                  <span className="text-xs text-black font-bold">Quantity:</span>
+                  <div className="flex items-center border-2 border-black/30 bg-[#f8f8fa] rounded-xs shadow-2xs">
                     <button
                       onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
                       disabled={quantity <= 1}
-                      className="p-2 text-[#a1a1aa] hover:text-white disabled:opacity-30 cursor-pointer"
+                      className="p-2 text-black hover:text-[#b8860b] disabled:opacity-30 cursor-pointer font-bold"
                       aria-label="Decrease quantity"
                     >
-                      <Minus className="w-3.5 h-3.5" />
+                      <Minus className="w-3.5 h-3.5 stroke-[2.5]" />
                     </button>
-                    <span className="px-3 text-xs font-mono font-bold text-white tabular-nums">
+                    <span className="px-3 text-xs font-mono font-black text-black tabular-nums">
                       {quantity}
                     </span>
                     <button
                       onClick={() => setQuantity(prev => Math.min(product.stock, prev + 1))}
                       disabled={quantity >= product.stock}
-                      className="p-2 text-[#a1a1aa] hover:text-white disabled:opacity-30 cursor-pointer"
+                      className="p-2 text-black hover:text-[#b8860b] disabled:opacity-30 cursor-pointer font-bold"
                       aria-label="Increase quantity"
                     >
-                      <Plus className="w-3.5 h-3.5" />
+                      <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
                     </button>
                   </div>
                 </div>
@@ -333,23 +333,23 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       <button
                         onClick={handleAddToCart}
                         disabled={isOutOfStock}
-                        className={`flex-1 py-3.5 px-4 rounded-xs text-xs uppercase tracking-wider font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer border ${
+                        className={`flex-1 py-3.5 px-4 rounded-xs text-xs uppercase tracking-wider font-extrabold flex items-center justify-center gap-2 transition-all cursor-pointer border-2 ${
                           isOutOfStock
-                            ? 'bg-[#181822] text-[#71717a] border-[#272738] cursor-not-allowed'
+                            ? 'bg-[#f4f4f6] text-[#a1a1aa] border-[#e5e5eb] cursor-not-allowed'
                             : addedAnimation
-                            ? 'bg-emerald-950/80 border-emerald-500 text-emerald-300'
-                            : 'bg-[#171722] hover:bg-[#222232] text-white border-[#38384d] hover:border-[#d4af37]/70 active:scale-[0.99]'
+                            ? 'bg-emerald-50 border-emerald-600 text-emerald-900'
+                            : 'bg-[#ffffff] hover:bg-black text-black hover:text-white border-black shadow-xs active:scale-[0.99]'
                         }`}
                         title="Add to Shopping Cart"
                       >
                         {addedAnimation ? (
                           <>
-                            <Check className="w-4 h-4 text-emerald-400" />
+                            <Check className="w-4 h-4 text-emerald-600" />
                             <span>Added to Cart ({quantity})</span>
                           </>
                         ) : (
                           <>
-                            <ShoppingBag className="w-4 h-4 text-[#d4af37]" />
+                            <ShoppingBag className="w-4 h-4 text-[#111116]" />
                             <span>{addToCartText}</span>
                           </>
                         )}
@@ -361,9 +361,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                       <button
                         onClick={handleOrderNow}
                         disabled={isOutOfStock}
-                        className={`flex-1 py-3.5 px-4 rounded-xs text-xs uppercase tracking-widest font-bold flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-[0.99] ${
+                        className={`flex-1 py-3.5 px-4 rounded-xs text-xs uppercase tracking-widest font-bold flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-[0.99] shadow-xs ${
                           isOutOfStock
-                            ? 'bg-[#1e1e28] text-[#71717a] cursor-not-allowed'
+                            ? 'bg-[#f4f4f6] text-[#a1a1aa] cursor-not-allowed'
                             : getOrderNowColorClass(orderNowColor)
                         }`}
                         title="Proceed Directly to Order Checkout"
@@ -381,8 +381,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         onClick={() => toggleWishlist(product.id)}
                         className={`p-3.5 rounded-xs border transition-colors cursor-pointer shrink-0 flex items-center justify-center ${
                           isFavorited
-                            ? 'bg-[#d4af37] text-black border-[#d4af37]'
-                            : 'border-[#272738] text-[#a1a1aa] hover:text-white hover:border-[#71717a] bg-[#121218]'
+                            ? 'bg-[#111116] text-[#d4af37] border-[#111116]'
+                            : 'border-[#e5e5eb] text-[#52525b] hover:text-[#111116] hover:border-[#111116] bg-[#ffffff]'
                         }`}
                         aria-label="Wishlist toggle"
                       >
@@ -397,17 +397,17 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               </div>
 
               {/* Guarantees Strip */}
-              <div className="pt-4 border-t border-[#1c1c28] grid grid-cols-3 gap-2 text-[10px] text-[#71717a] text-center">
+              <div className="pt-4 border-t border-[#e5e5eb] grid grid-cols-3 gap-2 text-[10px] text-[#71717a] text-center">
                 <div className="flex flex-col items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#d4af37]" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#b8860b]" />
                   <span>100% Authentic Fabric</span>
                 </div>
                 <div className="flex flex-col items-center gap-1">
-                  <Truck className="w-3.5 h-3.5 text-[#d4af37]" />
+                  <Truck className="w-3.5 h-3.5 text-[#b8860b]" />
                   <span>Express Bangladesh Delivery</span>
                 </div>
                 <div className="flex flex-col items-center gap-1">
-                  <RotateCcw className="w-3.5 h-3.5 text-[#d4af37]" />
+                  <RotateCcw className="w-3.5 h-3.5 text-[#b8860b]" />
                   <span>7-Day Bespoke Exchange</span>
                 </div>
               </div>
@@ -415,12 +415,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
           </div>
 
           {/* Details & Specs Tabs */}
-          <div className="p-6 sm:p-8 bg-[#0a0a0d] border-t border-[#20202d]">
-            <div className="flex border-b border-[#20202d] gap-6 text-xs mb-4">
+          <div className="p-6 sm:p-8 bg-[#f8f8fa] border-t border-[#e5e5eb]">
+            <div className="flex border-b border-[#e5e5eb] gap-6 text-xs mb-4">
               <button
                 onClick={() => setActiveTab('details')}
                 className={`pb-2 uppercase tracking-wider font-semibold border-b-2 transition-colors cursor-pointer ${
-                  activeTab === 'details' ? 'border-[#d4af37] text-white' : 'border-transparent text-[#71717a]'
+                  activeTab === 'details' ? 'border-[#111116] text-[#111116]' : 'border-transparent text-[#71717a]'
                 }`}
               >
                 Craftsmanship
@@ -428,7 +428,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               <button
                 onClick={() => setActiveTab('materials')}
                 className={`pb-2 uppercase tracking-wider font-semibold border-b-2 transition-colors cursor-pointer ${
-                  activeTab === 'materials' ? 'border-[#d4af37] text-white' : 'border-transparent text-[#71717a]'
+                  activeTab === 'materials' ? 'border-[#111116] text-[#111116]' : 'border-transparent text-[#71717a]'
                 }`}
               >
                 Fabric & Care
@@ -436,18 +436,18 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               <button
                 onClick={() => setActiveTab('delivery')}
                 className={`pb-2 uppercase tracking-wider font-semibold border-b-2 transition-colors cursor-pointer ${
-                  activeTab === 'delivery' ? 'border-[#d4af37] text-white' : 'border-transparent text-[#71717a]'
+                  activeTab === 'delivery' ? 'border-[#111116] text-[#111116]' : 'border-transparent text-[#71717a]'
                 }`}
               >
                 Delivery & Returns
               </button>
             </div>
 
-            <div className="text-xs text-[#a1a1aa] leading-relaxed">
+            <div className="text-xs text-[#52525b] leading-relaxed">
               {activeTab === 'details' && (
                 <div className="space-y-2">
                   <p>Hand-cut and assembled by master tailors. Features canvas basted chest architecture ensuring the garment forms naturally to your chest contours over time.</p>
-                  <p className="text-[#d4af37]">Horn buttons sustainably harvested, pick-stitched lapels, and double interior jet pockets.</p>
+                  <p className="text-[#997b32] font-medium">Horn buttons sustainably harvested, pick-stitched lapels, and double interior jet pockets.</p>
                 </div>
               )}
               {activeTab === 'materials' && (
@@ -468,8 +468,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
           {/* Related Products Section */}
           {relatedProducts.length > 0 && (
-            <div className="p-6 sm:p-8 bg-[#0a0a0d] border-t border-[#20202d]">
-              <h4 className="text-xs uppercase tracking-widest text-[#a1a1aa] mb-4 font-semibold">
+            <div className="p-6 sm:p-8 bg-[#ffffff] border-t border-[#e5e5eb]">
+              <h4 className="text-xs uppercase tracking-widest text-[#71717a] mb-4 font-semibold">
                 Complete The Silhouette
               </h4>
               <div className="grid grid-cols-3 gap-4">
@@ -479,7 +479,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     onClick={() => onSelectProduct(rel)}
                     className="group cursor-pointer text-left"
                   >
-                    <div className="aspect-3/4 rounded-xs overflow-hidden bg-[#14141c] mb-2 border border-[#20202d] group-hover:border-[#d4af37]/50 transition-colors">
+                    <div className="aspect-3/4 rounded-xs overflow-hidden bg-[#f4f4f7] mb-2 border border-[#e5e5eb] group-hover:border-[#111116]/40 transition-colors">
                       <LuxuryFallbackImage
                         src={rel.images[0]}
                         alt={rel.title}
@@ -487,10 +487,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <p className="text-xs font-serif text-white truncate group-hover:text-[#d4af37] transition-colors">
+                    <p className="text-xs font-serif text-[#111116] truncate group-hover:text-[#b8860b] transition-colors font-medium">
                       {rel.title}
                     </p>
-                    <p className="text-[11px] font-mono text-[#a1a1aa]">
+                    <p className="text-[11px] font-mono text-[#71717a]">
                       {currencyFormat(rel.salePrice || rel.price)}
                     </p>
                   </div>
@@ -504,14 +504,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
       {/* Interactive Size Guide Drawer */}
       {isSizeGuideOpen && (
         <div className="fixed inset-0 z-60 flex items-center justify-center p-4">
-          <div onClick={() => setIsSizeGuideOpen(false)} className="fixed inset-0 bg-black/80 backdrop-blur-xs" />
-          <div className="relative w-full max-w-lg bg-[#121218] border border-[#272738] rounded-xs p-6 space-y-4 text-xs">
-            <div className="flex items-center justify-between pb-3 border-b border-[#20202e]">
+          <div onClick={() => setIsSizeGuideOpen(false)} className="fixed inset-0 bg-black/60 backdrop-blur-xs" />
+          <div className="relative w-full max-w-lg bg-[#ffffff] border border-[#e5e5eb] rounded-xs p-6 space-y-4 text-xs text-[#111116] shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-[#e5e5eb]">
               <div className="flex items-center gap-2">
-                <Ruler className="w-4 h-4 text-[#d4af37]" />
-                <h3 className="font-serif text-sm font-bold text-white uppercase">Sartorial Size Chart</h3>
+                <Ruler className="w-4 h-4 text-[#b8860b]" />
+                <h3 className="font-serif text-sm font-bold text-[#111116] uppercase">Sartorial Size Chart</h3>
               </div>
-              <button onClick={() => setIsSizeGuideOpen(false)} className="text-[#a1a1aa] hover:text-white">
+              <button onClick={() => setIsSizeGuideOpen(false)} className="text-[#71717a] hover:text-[#111116]">
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -519,18 +519,18 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs font-mono">
                 <thead>
-                  <tr className="border-b border-[#20202c] text-[#71717a]">
+                  <tr className="border-b border-[#e5e5eb] text-[#71717a]">
                     <th className="py-2">Size</th>
                     <th className="py-2">Chest (in)</th>
                     <th className="py-2">Shoulder (in)</th>
                     <th className="py-2">Sleeve (in)</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#181822] text-[#d4d4d8]">
-                  <tr><td className="py-2 font-bold text-white">38R / S</td><td>38 - 39</td><td>17.5</td><td>25.0</td></tr>
-                  <tr><td className="py-2 font-bold text-white">40R / M</td><td>40 - 41</td><td>18.0</td><td>25.5</td></tr>
-                  <tr><td className="py-2 font-bold text-white">42R / L</td><td>42 - 43</td><td>18.5</td><td>26.0</td></tr>
-                  <tr><td className="py-2 font-bold text-white">44R / XL</td><td>44 - 45</td><td>19.0</td><td>26.5</td></tr>
+                <tbody className="divide-y divide-[#f0f0f4] text-[#52525b]">
+                  <tr><td className="py-2 font-bold text-[#111116]">38R / S</td><td>38 - 39</td><td>17.5</td><td>25.0</td></tr>
+                  <tr><td className="py-2 font-bold text-[#111116]">40R / M</td><td>40 - 41</td><td>18.0</td><td>25.5</td></tr>
+                  <tr><td className="py-2 font-bold text-[#111116]">42R / L</td><td>42 - 43</td><td>18.5</td><td>26.0</td></tr>
+                  <tr><td className="py-2 font-bold text-[#111116]">44R / XL</td><td>44 - 45</td><td>19.0</td><td>26.5</td></tr>
                 </tbody>
               </table>
             </div>

@@ -93,7 +93,7 @@ export const FloatingButtonsRenderer: React.FC = () => {
     : `tel:${contactValue}`;
 
   return (
-    <div className="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-2.5 pointer-events-none">
+    <div className="fixed bottom-16 right-4 z-40 flex flex-col items-end gap-2.5 pointer-events-none">
       {/* 1. Custom Floating Buttons */}
       {activeFloatingButtons.map((btn) => (
         <a
@@ -110,19 +110,20 @@ export const FloatingButtonsRenderer: React.FC = () => {
         </a>
       ))}
 
-      {/* 2. Primary Floating Helpline (WhatsApp or Phone) */}
+      {/* 2. Primary Floating Helpline (WhatsApp) - Icon Only */}
       {showFloatingContact && (
         <a
           href={contactLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="pointer-events-auto flex items-center gap-2.5 px-4 py-3 bg-[#111116]/95 hover:bg-[#171720] text-emerald-400 border border-emerald-500/50 hover:border-emerald-400 rounded-full shadow-2xl shadow-black/80 backdrop-blur-md text-xs font-mono tracking-wider transition-all hover:scale-105 active:scale-95 group"
+          className="pointer-events-auto w-12 h-12 flex items-center justify-center bg-[#25D366] hover:bg-[#20ba59] text-white rounded-full shadow-2xl shadow-black/90 transition-all duration-300 hover:scale-110 active:scale-95 group relative border-2 border-white/20"
           title={contactText}
           aria-label={contactText}
         >
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-          <MessageCircle className="w-4 h-4 fill-emerald-500/20" />
-          <span className="font-bold text-white text-xs">{contactText}</span>
+          <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+            <path d="M12.031 0C5.398 0 .016 5.383.016 12.016c0 2.12.553 4.19 1.602 6.012L.07 24.032l6.195-1.625c1.742.953 3.719 1.453 5.766 1.453 6.633 0 12.016-5.383 12.016-12.016C24.047 5.383 18.664 0 12.031 0zm.016 21.984c-1.805 0-3.57-.484-5.117-1.406l-.367-.219-3.805.996 1.016-3.711-.242-.383A9.948 9.948 0 012.03 12.016c0-5.516 4.484-10 10.016-10 5.516 0 10 4.484 10 10s-4.484 10-10.016 10zm5.484-7.484c-.3-.15-1.781-.883-2.055-.984-.273-.1-.477-.15-.672.15-.2.3-.773.984-.953 1.18-.172.2-.352.219-.656.062s-1.289-.477-2.453-1.516c-.906-.805-1.523-1.805-1.703-2.109-.172-.3-.02-.469.133-.617.14-.14.3-.352.453-.531.148-.18.2-.3.3-.5.1-.2.05-.375-.023-.531-.078-.15-.672-1.625-.922-2.227-.242-.586-.484-.508-.672-.516-.172-.008-.375-.008-.57-.008s-.531.078-.805.375c-.281.3-1.078 1.055-1.078 2.57 0 1.516 1.102 2.977 1.258 3.18.156.2 2.164 3.305 5.242 4.633.734.313 1.305.5 1.75.641.734.234 1.406.2 1.938.125.594-.086 1.781-.727 2.031-1.43.25-.703.25-1.305.172-1.43-.078-.125-.273-.2-.57-.35z"/>
+          </svg>
+          <span className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-[#0c0c0e] animate-pulse" />
         </a>
       )}
     </div>

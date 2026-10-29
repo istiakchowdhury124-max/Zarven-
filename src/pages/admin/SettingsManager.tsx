@@ -12,7 +12,14 @@ export const SettingsManager: React.FC = () => {
     standardShippingFee: settings.standardShippingFee || 150,
     taxRate: settings.taxRate || 0.05,
     paymentMethods: { ...settings.paymentMethods },
-    adminPasscode: settings.adminPasscode || '1971'
+    adminPasscode: settings.adminPasscode || '1971',
+    socialLinks: {
+      facebook: settings.socialLinks?.facebook || 'https://facebook.com/zarven.official',
+      whatsapp: settings.socialLinks?.whatsapp || 'https://wa.me/8801711000000',
+      instagram: settings.socialLinks?.instagram || 'https://instagram.com/zarven.official',
+      youtube: settings.socialLinks?.youtube || 'https://youtube.com/@zarven',
+      tiktok: settings.socialLinks?.tiktok || 'https://tiktok.com/@zarven'
+    }
   });
 
   const [isSaved, setIsSaved] = useState(false);
@@ -24,6 +31,10 @@ export const SettingsManager: React.FC = () => {
     try {
       await updateSettings({
         ...formData,
+        socialLinks: {
+          ...settings.socialLinks,
+          ...formData.socialLinks
+        },
         freeShippingThreshold: Number(formData.freeShippingThreshold),
         standardShippingFee: Number(formData.standardShippingFee),
         taxRate: Number(formData.taxRate)
@@ -239,6 +250,114 @@ export const SettingsManager: React.FC = () => {
               <span className="text-[10px] text-[#71717a] mt-1 block">
                 অন্য কোনো ডিভাইস বা ব্রাউজার থেকে সরাসরি এই কোড দিয়ে আনলক করা যাবে।
               </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Social Media Channels & Follow Us Links */}
+        <div className="p-6 bg-[#121218] border border-[#20202c] rounded-xs space-y-4">
+          <div className="flex items-center justify-between pb-2 border-b border-[#1f1f2c]">
+            <h3 className="font-serif text-sm font-semibold text-white uppercase tracking-wider">
+              Social Media Channels & Follow Us Links (সোশ্যাল মিডিয়া ও ফলো আস লিংক)
+            </h3>
+            <span className="text-[10px] font-mono text-[#d4af37] uppercase">
+              Footer Follow Us
+            </span>
+          </div>
+
+          <p className="text-[#8e8ea0] text-[11px] leading-relaxed">
+            ফুটারের একদম ডানে থাকা <strong>FOLLOW US</strong> সেকশনের ফেসবুক, হোয়াটসঅ্যাপ, ইনস্টাগ্রাম, ইউটিউব এবং টিকটক লিংক এখানে সেট করুন। ভিজিটররা ক্লিক করলে সরাসরি আপনার অফিসিয়াল পেজ ওপেন হবে।
+          </p>
+
+          <div className="space-y-3.5 pt-1">
+            {/* Facebook */}
+            <div>
+              <label className="text-[#a1a1aa] uppercase font-mono tracking-wider text-[11px] block mb-1 flex items-center gap-1.5">
+                <span className="text-[#1877F2]">f</span>
+                <span>Facebook Page / Profile URL</span>
+              </label>
+              <input
+                type="url"
+                value={formData.socialLinks.facebook || ''}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  socialLinks: { ...prev.socialLinks, facebook: e.target.value }
+                }))}
+                placeholder="https://facebook.com/your-brand"
+                className="w-full bg-[#181824] border border-[#272738] focus:border-[#d4af37] text-white px-3.5 py-2 rounded-xs font-mono text-xs focus:outline-hidden"
+              />
+            </div>
+
+            {/* WhatsApp */}
+            <div>
+              <label className="text-[#a1a1aa] uppercase font-mono tracking-wider text-[11px] block mb-1 flex items-center gap-1.5">
+                <span className="text-[#25D366]">wa</span>
+                <span>WhatsApp Number or Direct Link</span>
+              </label>
+              <input
+                type="text"
+                value={formData.socialLinks.whatsapp || ''}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  socialLinks: { ...prev.socialLinks, whatsapp: e.target.value }
+                }))}
+                placeholder="https://wa.me/8801700000000 বা +8801700000000"
+                className="w-full bg-[#181824] border border-[#272738] focus:border-[#d4af37] text-white px-3.5 py-2 rounded-xs font-mono text-xs focus:outline-hidden"
+              />
+            </div>
+
+            {/* Instagram */}
+            <div>
+              <label className="text-[#a1a1aa] uppercase font-mono tracking-wider text-[11px] block mb-1 flex items-center gap-1.5">
+                <span className="text-[#E4405F]">ig</span>
+                <span>Instagram Profile URL</span>
+              </label>
+              <input
+                type="url"
+                value={formData.socialLinks.instagram || ''}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  socialLinks: { ...prev.socialLinks, instagram: e.target.value }
+                }))}
+                placeholder="https://instagram.com/your-brand"
+                className="w-full bg-[#181824] border border-[#272738] focus:border-[#d4af37] text-white px-3.5 py-2 rounded-xs font-mono text-xs focus:outline-hidden"
+              />
+            </div>
+
+            {/* YouTube */}
+            <div>
+              <label className="text-[#a1a1aa] uppercase font-mono tracking-wider text-[11px] block mb-1 flex items-center gap-1.5">
+                <span className="text-[#FF0000]">yt</span>
+                <span>YouTube Channel URL</span>
+              </label>
+              <input
+                type="url"
+                value={formData.socialLinks.youtube || ''}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  socialLinks: { ...prev.socialLinks, youtube: e.target.value }
+                }))}
+                placeholder="https://youtube.com/@your-channel"
+                className="w-full bg-[#181824] border border-[#272738] focus:border-[#d4af37] text-white px-3.5 py-2 rounded-xs font-mono text-xs focus:outline-hidden"
+              />
+            </div>
+
+            {/* TikTok */}
+            <div>
+              <label className="text-[#a1a1aa] uppercase font-mono tracking-wider text-[11px] block mb-1 flex items-center gap-1.5">
+                <span className="text-[#00F2FE]">tt</span>
+                <span>TikTok Profile URL</span>
+              </label>
+              <input
+                type="url"
+                value={formData.socialLinks.tiktok || ''}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  socialLinks: { ...prev.socialLinks, tiktok: e.target.value }
+                }))}
+                placeholder="https://tiktok.com/@your-profile"
+                className="w-full bg-[#181824] border border-[#272738] focus:border-[#d4af37] text-white px-3.5 py-2 rounded-xs font-mono text-xs focus:outline-hidden"
+              />
             </div>
           </div>
         </div>

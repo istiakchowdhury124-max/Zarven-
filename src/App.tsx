@@ -37,6 +37,9 @@ function MainApp() {
       const hash = window.location.hash.toLowerCase();
       const pathname = window.location.pathname.toLowerCase();
       if (
+        search.includes('arman') ||
+        hash.includes('arman') ||
+        pathname.includes('arman') ||
         search.includes('secret=zarven-admin') ||
         search.includes('admin=studio') ||
         search.includes('portal=admin') ||
@@ -120,6 +123,9 @@ function MainApp() {
       const pathname = window.location.pathname.toLowerCase();
 
       const isSecretUrl =
+        search.includes('arman') ||
+        hash.includes('arman') ||
+        pathname.includes('arman') ||
         search.includes('secret=zarven-admin') ||
         search.includes('admin=studio') ||
         search.includes('portal=admin') ||
@@ -140,13 +146,23 @@ function MainApp() {
       }
     };
 
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Hotkey: Ctrl + Shift + A (or Cmd + Shift + A) for instant Admin Access
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        e.preventDefault();
+        setCurrentView('admin');
+      }
+    };
+
     checkSecretUrl();
     window.addEventListener('hashchange', checkSecretUrl);
     window.addEventListener('popstate', checkSecretUrl);
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       window.removeEventListener('hashchange', checkSecretUrl);
       window.removeEventListener('popstate', checkSecretUrl);
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
 
@@ -361,26 +377,11 @@ function MainApp() {
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
         onSelectProduct={(p) => setSelectedProduct(p)}
+        onNavigateAdmin={() => handleNavigate('admin')}
       />
 
       {/* Floating Buttons: WhatsApp, Call & Custom Site Buttons */}
       <FloatingButtonsRenderer />
-
-      {/* 5. Floating Quick Admin Studio Shortcut */}
-      <div className="fixed bottom-4 left-4 z-40">
-        <button
-          onClick={() => handleNavigate('admin')}
-          className="flex items-center gap-2 px-3.5 py-2 bg-[#12121a]/95 hover:bg-[#1c1c28] text-[#d4af37] border border-[#d4af37]/60 rounded-full shadow-xl shadow-black/90 backdrop-blur-md text-xs font-mono uppercase tracking-wider cursor-pointer transition-all hover:scale-105 active:scale-95 group"
-          title="Open Zarven Admin Studio"
-          aria-label="Open Zarven Admin Studio"
-        >
-          <span className="w-2 h-2 rounded-full bg-[#d4af37] animate-pulse" />
-          <span className="font-semibold flex items-center gap-1.5">
-            <span>🛡️</span>
-            <span>Admin Studio</span>
-          </span>
-        </button>
-      </div>
 
     </div>
   );
